@@ -1,0 +1,23 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="/">Rezerwacja lotów</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a class="nav-link active" [ngClass]="{active: router.url === '/flights'}" routerLink="flights">Loty</a>
+          </li>
+          <li *ngIf="isLoged" class="nav-item">
+            <a class="nav-link" [ngClass]="{active: router.url === '/reservations'}" routerLink="reservations">Rezerwacje</a>
+          </li>
+        </ul>
+        <form class="d-flex">
+            <a *ngIf="!isLoged" class="btn btn-outline-success my-2 my-sm-0" routerLink="login">Logowanie</a>
+            &nbsp;
+            <a *ngIf="!isLoged" class="btn btn-outline-success my-2 my-sm-0" routerLink="register">Rejestracja</a>
+            <button *ngIf="isLoged" (click)="logOut()" class="btn btn-outline-success my-2 my-sm-0">wyloguj</button>
+        </form>
+      </div>
+    </div>
+  </nav>

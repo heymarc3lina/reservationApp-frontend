@@ -1,0 +1,40 @@
+<div style="padding-top: 50px; margin: auto; width: 40%;">
+    <div *ngIf="isNotCompletedFormAlert" class="alert alert-danger" role="alert">
+        Musisz wypełnić wszystkie pola przy rejestracji.
+    </div>
+    <div *ngIf="isNotMatchPasswordsAlert" class="alert alert-danger" role="alert">
+        Nie poprawnie potwierdziłeś hasło.
+    </div>
+    <div *ngIf="isServerErrorAlert" class="alert alert-danger" role="alert">
+        Błąd przy komunikacji z serwerem.
+    </div>
+    <div *ngIf="isValidSurnameName" class="alert alert-danger" role="alert">
+        Nazwisko powinno zawierac same litery
+    </div>
+    <div *ngIf="isValidName" class="alert alert-danger" role="alert">
+        Imie powinno zawierac same litery
+    </div>
+    <form [formGroup]="dataForm" (ngSubmit)="onSubmit()">
+        <div class="form-group">
+            <label for="exampleInputEmail1">Email</label>
+            <input ype="text" class="form-control" id="exampleInputEmail1" name="email" aria-describedby="emailHelp" placeholder="Wpisz email" formControlName="email">
+        </div>
+        <div class="form-group">
+            <label for="exampleInputusername1">Imie</label>
+            <input type="text" class="form-control" id="exampleInputusername" name="name" placeholder="Imie" formControlName="name">
+        </div>
+        <div class="form-group">
+            <label for="exampleInputusername2">Nazwisko</label>
+            <input type="text" class="form-control" id="exampleInputusername" name="surname" placeholder="Nazwisko" formControlName="surname">
+        </div>
+        <div class="form-group">
+            <label for="exampleInputPassword1">Hasło</label>
+            <input type="password" class="form-control" id="exampleInputPassword1" name="password" placeholder="Hasło" formControlName="password">
+        </div>
+        <div class="form-group">
+            <label for="exampleInputPassword2">Potwierdź Hasło</label>
+            <input type="password" class="form-control" id="exampleInputPassword2" name="confirmPassword" placeholder="Potwierdź Hasło" formControlName="confirmPassword">
+        </div>
+        <button type="submit" class="btn btn-primary">Zarejestruj</button>
+    </form>
+</div>
