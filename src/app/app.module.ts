@@ -5,32 +5,40 @@ import { AppComponent } from './app.component';
 import { NavbarComponent } from './navbar/navbar.component';
 import { RegisterComponent } from './register/register.component';
 import { HttpClientModule } from '@angular/common/http';
-import { ReactiveFormsModule } from '@angular/forms';
 import { LoginComponent } from './login/login.component';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { ModalModule } from 'ngx-bootstrap/modal';
-import { MatToolbarModule } from '@angular/material/toolbar';
+// import { MatToolbarModule } from '@angular/material/toolbar';
+import { AuthGuardService } from './service/auth-guard.service';
+import { FlightsComponent } from './flights/flights.component';
+import {MaterialExampleModule} from './material.modules';
+// import {MatNativeDateModule} from '@angular/material/core';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 
 @NgModule({
   declarations: [
     AppComponent,
     NavbarComponent,
     RegisterComponent,
-    LoginComponent
+    LoginComponent,
+    FlightsComponent
   ],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
     AppRoutingModule,
     HttpClientModule,
     BsDropdownModule.forRoot(),
     TooltipModule.forRoot(),
     ModalModule.forRoot(),
     ReactiveFormsModule,
-    MatToolbarModule
+    FormsModule,
+    MaterialExampleModule
   ],
-  exports:[MatToolbarModule],
-  providers: [],
+  exports:[],
+  providers: [AuthGuardService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

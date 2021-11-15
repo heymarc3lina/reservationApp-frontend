@@ -1,0 +1,21 @@
+.main-container {
+    margin-top: 15px;
+}
+
+.flight-card {
+    display: inline-block;
+    width: 18rem;
+    margin: 1rem;
+}
+
+.form-group{
+    margin-top: 20px;
+    margin-left: 25px;
+    margin-bottom: 20px;
+}
+
+.dropdown{
+    margin-top: 20px;
+    margin-left: 25px;
+    margin-bottom: 20px;
+}
