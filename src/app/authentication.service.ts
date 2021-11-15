@@ -53,7 +53,7 @@ export class AuthenticationService {
   }
 
   register(registerData: registerModel): Observable<boolean> {
-    return this.http.post('api/register/buyer', registerData, { observe: 'response' }).pipe(
+    return this.http.post('api/register/user', registerData, { observe: 'response' }).pipe(
       map(response => {
         if (response.status !== 201) {
           console.log('something went wrong');
