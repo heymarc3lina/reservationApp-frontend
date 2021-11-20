@@ -6,10 +6,16 @@
         Nie poprawnie potwierdziłeś hasło.
     </div>
     <div *ngIf="isServerErrorAlert" class="alert alert-danger" role="alert">
-        Błąd przy komunikacji z serwerem.
+        Użytkownik o takim email już istnieje.
     </div>
     <div *ngIf="isValidSurnameName" class="alert alert-danger" role="alert">
-        Nazwisko powinno zawierac same litery
+        Nazwisko powinno zawierac same litery.
+    </div>
+    <div *ngIf="isNotEnoughLongPassword" class="alert alert-danger" role="alert">
+        Hasło powinno mieć minimum 5 znaków.
+    </div>
+    <div *ngIf="isEmailNotCorrect" class="alert alert-danger" role="alert">
+       Zły format adresu email.
     </div>
     <div *ngIf="isValidName" class="alert alert-danger" role="alert">
         Imie powinno zawierac same litery
@@ -21,11 +27,11 @@
         </div>
         <div class="form-group">
             <label for="exampleInputusername1">Imie</label>
-            <input type="text" class="form-control" id="exampleInputusername" name="name" placeholder="Imie" formControlName="name">
+            <input type="text" class="form-control" id="exampleInputusername1" name="name" placeholder="Imie" formControlName="name">
         </div>
         <div class="form-group">
             <label for="exampleInputusername2">Nazwisko</label>
-            <input type="text" class="form-control" id="exampleInputusername" name="surname" placeholder="Nazwisko" formControlName="surname">
+            <input type="text" class="form-control" id="exampleInputusername2" name="surname" placeholder="Nazwisko" formControlName="surname">
         </div>
         <div class="form-group">
             <label for="exampleInputPassword1">Hasło</label>

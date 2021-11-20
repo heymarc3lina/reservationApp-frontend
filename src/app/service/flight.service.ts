@@ -6,12 +6,12 @@ import { AuthenticationService } from './authentication.service';
 
 export interface FlightModel {
   id: number;
-  arrivalAirport: string;
-  arrivalDate: Date
-  departureAirport: string;
-  departureDate: Date
-  flightStatus: string
-  minPrice: number;
+  arrivalAirports: string;
+  arrivalDate: Date;
+  departureAirports: string;
+  departureDate: Date;
+  flightStatus: string;
+  minPrice: number
 }
 
 
@@ -23,19 +23,18 @@ interface AllFlightsModel {
   providedIn: 'root'
 })
 export class FlightService {
-
+  private API_URL_FLIGHTS = "http://localhost:8081/ticketreservation/api/flight/allFlight" ;
   constructor(private http: HttpClient, private authenticationService: AuthenticationService) { }
 
   getAllFlights(): Observable<Array<FlightModel>> {
-    const token = this.authenticationService.tokenValue;
-    const headers = new HttpHeaders().set('authorization', token || '');
-    return this.http.get<AllFlightsModel>('api/flights', { headers }).pipe(
-      map(response => response.flights),
-      catchError(() => {
-        console.log('error in connection with server');
-        return of([]);
-      })
-    );
+    return this.http.get<Array<FlightModel>>(this.API_URL_FLIGHTS);
+    // .pipe(
+    //   map(response => response.flights),
+    //   catchError(() => {
+    //     console.log('error in connection with server');
+    //     return of([]);
+    //   })
+    // );
   }
 
 //   getProduct(id: number): Observable<DetailedFlightModel> {

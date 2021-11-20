@@ -16,6 +16,7 @@ import {MaterialExampleModule} from './material.modules';
 // import {MatNativeDateModule} from '@angular/material/core';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import { ConfirmReservationComponent } from './confirm-reservation/confirm-reservation.component';
 
 @NgModule({
   declarations: [
@@ -23,7 +24,8 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
     NavbarComponent,
     RegisterComponent,
     LoginComponent,
-    FlightsComponent
+    FlightsComponent,
+    ConfirmReservationComponent
   ],
   imports: [
     BrowserModule,

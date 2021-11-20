@@ -34,15 +34,15 @@ export class FlightsComponent implements OnInit, OnDestroy {
 
   getAllProducts(): void {
     this.flightService.getAllFlights().subscribe(flights => {
-      let numberOfReadyProducts = 0;
-      flights?.forEach(flight => {
-        this.listOfFlights.push(flight);
+        this.listOfFlights = flights;
+      // flights?.forEach(flight => {
+      //   this.listOfFlights.push(flight);
         //   if (numberOfReadyProducts > flights.length - 2) {
-            this.prepareForms();
+            // this.prepareForms();
         //   }
-          numberOfReadyProducts++;
+        
         });
-      });
+      // });
     };
   
 
