@@ -163,7 +163,7 @@ export class FlightsComponent implements OnInit, OnDestroy {
   filterFlights(): void {
     this.dataLoaded = false;
     var isDate = (this.dataForms.get('date')?.value as Date) instanceof Date;
-    console.log((this.dataForms.get('date')?.value as Date) instanceof Date);
+
     if (isDate) {
       this.filteredListOfFlights = this.listOfFlights.filter(flight => {
         if (this.dataForms.get('inputArrivalAirports')?.value == this.defaultOption && this.dataForms.get('inputDepartureAirports')?.value == this.defaultOption) {
@@ -204,23 +204,19 @@ export class FlightsComponent implements OnInit, OnDestroy {
         }
       });
     }
+    // console.log((this.dataForms.get('date')?.value as Date).toLocaleString());
     console.log(this.dataLoaded);
     this.dataLoaded = true;
     console.log(this.dataLoaded);
   }
 
   compareDate(firstDate: String, secondDate: String): boolean {
-    console.log(firstDate);
     let splitted = firstDate.split(" ", 1);
     let splitted1 = secondDate.split(",", 1);
-    console.log(splitted);
-    console.log(splitted1);
     if (splitted1.toString() === splitted.toString()) {
       return true;
     }
-    console.log("Sa rozne");
     return false;
-
   }
 
   ngOnDestroy(): void {
