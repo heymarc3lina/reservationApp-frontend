@@ -1,4 +1,41 @@
-<table class= "table table-striped">
+<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+ <div *ngIf="dataLoaded; else loading" >  
+  <form [formGroup]="dataForms" >
+    <div class="form-group">
+      <!-- <label for="date">Data lotu:&nbsp;</label>
+      <input type="date" class="form-control"  id="date" formControlName="date" > -->
+      <mat-form-field>
+        <input matInput  [matDatepicker]="datePicker" placeholder="Wybierz date"  formControlName="date">
+        <mat-datepicker-toggle [for]="datePicker" matSuffix></mat-datepicker-toggle>
+        <mat-datepicker #datePicker></mat-datepicker>
+      </mat-form-field>
+    </div>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    <div class="form-group">
+        <label for="inputDepartureAirports">Lotnisko odlotu:</label>
+        <select id="inputDepartureAirports" class="form-control"  id="inputDepartureAirports" formControlName="inputDepartureAirports">
+          <option *ngFor="let airports of listOfDepartureAirports"> {{airports}} </option>
+        </select>
+      </div>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    <div class="form-group">
+        <label for="inputArrivalAirports">Lotnisko przylotu:</label>
+        <select id="inputArrivalAirports" class="form-control"  id="inputArrivalAirports" formControlName="inputArrivalAirports">
+          <option *ngFor="let airports of listOfArrivalAirports"> {{airports}} </option>
+        </select>
+      </div>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      <div form-item class="form-group ">
+        <label for="minPrice" class="sr-only">cena minimalna:</label>
+        <input type="number" class="form-control" id="minPrice" formControlName="minPrice">
+      </div>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      <div form-item class="form-group ">
+        <label for="maxPrice" class="sr-only">cena maksymalna:</label>
+        <input type="number" class="form-control" id="maxPrice" formControlName="maxPrice">
+      </div>
+ </form>
+<table class= "table">
   <thead>
     <tr>
       <th>Lotniska</th>
@@ -8,18 +45,27 @@
     </tr>
   </thead>
   <tbody>
-    <tr *ngFor = "let flight of listOfFlights">
-        <td> {{flight.arrivalAirports}} ----> {{flight.departureAirports}} </td>
-        <td> {{flight.arrivalDate}} ----> {{flight.departureDate}}</td>
+    <tr *ngFor = "let flight of filteredListOfFlights">
+        <td> <i class="fa fa-plane" aria-hidden="true"></i> {{flight.departureAirports}}  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          <i class="fa fa-arrow-right" aria-hidden="true">  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  </i>
+          <i class="fa fa-plane" aria-hidden="true"></i> {{flight.arrivalAirports}}  </td>
+        <td> {{flight.arrivalDate}}  &nbsp;&nbsp; <i class="fa fa-arrow-right" aria-hidden="true">  &nbsp;&nbsp; </i> {{flight.departureDate}}</td>
         <td>od {{flight.minPrice}}</td>
         <td>{{flight.flightStatus}}</td>
-        <button type="button" class="btn btn-primary" data-toggle="button" aria-pressed="false" autocomplete="off">
+        <td><button *ngIf="flight.isReservationActive"  type="button" class="btn btn-primary" routerLink="login" data-toggle="button" aria-pressed="false" autocomplete="off">
           Rezerwuj
-        </button>
+        </button></td>
     </tr>
   </tbody>
 </table>
-
+</div>
+<ng-template #loading>
+  <div class="text-center">
+    <div class="spinner-border" role="status">
+      <span class="sr-only"></span>
+    </div>
+  </div>
+</ng-template>
 
 
 <!-- <div *ngIf="dataLoaded; else loading" class="container main-container"> -->

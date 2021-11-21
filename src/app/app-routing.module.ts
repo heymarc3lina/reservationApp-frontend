@@ -1,5 +1,4 @@
 import { NgModule } from '@angular/core';
-import { MatToolbarModule } from '@angular/material/toolbar';
 import { RouterModule, Routes } from '@angular/router';
 import { ConfirmReservationComponent } from './confirm-reservation/confirm-reservation.component';
 import { FlightsComponent } from './flights/flights.component';
@@ -15,9 +14,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes),
-    MatToolbarModule],
-  exports: [RouterModule,
-    MatToolbarModule]
+  imports: [RouterModule.forRoot(routes)],
+  exports: [RouterModule]
 })
 export class AppRoutingModule { }

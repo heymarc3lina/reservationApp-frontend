@@ -12,6 +12,7 @@ export interface FlightModel {
   departureDate: Date;
   flightStatus: string;
   minPrice: number
+  isReservationActive:boolean
 }
 
 
@@ -24,6 +25,7 @@ interface AllFlightsModel {
 })
 export class FlightService {
   private API_URL_FLIGHTS = "http://localhost:8081/ticketreservation/api/flight/allFlight" ;
+  private API_URL_RESERVATION_DATA = "http://localhost:8081/ticketreservation/api/reservation/" ;
   constructor(private http: HttpClient, private authenticationService: AuthenticationService) { }
 
   getAllFlights(): Observable<Array<FlightModel>> {
@@ -37,12 +39,21 @@ export class FlightService {
     // );
   }
 
-//   getProduct(id: number): Observable<DetailedFlightModel> {
-//     return this.http.get<DetailedFlightModel>(`api/flight/${id}`).pipe(
-//       catchError(() => {
-//         console.log('error in connection with server');
-//         return EMPTY;
-//       })
-//     );
-//   }
+  getFilters():  Observable<Array<FlightModel>>{
+    return this.http.get<Array<FlightModel>>("http://localhost:8081/ticketreservation/api/reservation/allMyReservation",  { headers: this.getAuthorizationHeaders() });
+  }
+
+  private getAuthorizationHeaders(): HttpHeaders {
+    const token = this.authenticationService.tokenValue;
+    return new HttpHeaders().set('Authorization', `${token}`);
+  }
+  getFlightToReservation(id: number): Observable<FlightModel> {
+    return this.http.get<FlightModel>(this.API_URL_RESERVATION_DATA+`${id}`, { headers: this.getAuthorizationHeaders() }).pipe(
+      catchError(() => {
+        console.log('error in connection with server');
+        window.location.replace('/login');
+        return EMPTY;
+      })
+    );
+  }
 }

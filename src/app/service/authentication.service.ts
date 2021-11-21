@@ -30,14 +30,14 @@ export class AuthenticationService {
 
   login(loginData: loginModel): Observable<boolean> {
     console.log('make a call');
-    return this.http.post(this.API_URL_LOGIN, loginData, { observe: 'response', responseType: 'text' }).pipe(
+    return this.http.post(this.API_URL_LOGIN, loginData, { observe: 'response' }).pipe(
       map(response => {
         if (response.status !== 200) {
           return false;
         }
-        console.log(response.headers.get('authorization'));
-        if (response.headers.get('authorization')) {
-          this.storeToken(response.headers.get('authorization') || '');
+        console.log(response.headers);
+        if (response.headers.get('Authorization')) {
+          this.storeToken(response.headers.get('Authorization') || '');
           return true;
         }
         return false;
@@ -51,6 +51,7 @@ export class AuthenticationService {
 
   logOut(): void {
     localStorage.removeItem(this.JWT_TOKEN);
+    location.reload()
     this.router.navigate(['flights']);
   }
 
