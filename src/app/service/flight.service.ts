@@ -15,45 +15,59 @@ export interface FlightModel {
   isReservationActive:boolean
 }
 
+export interface DataToPrepareReservation{
+  id: number;
+  arrivalAirports:  string;
+  arrivalDate: Date;
+  departureAirports: string;
+  departureDate: Date;
+  seats: Array<Seats>;
+    
+}
 
-interface AllFlightsModel {
-  flights: Array<FlightModel>;
+export interface Seats{
+id:number;
+seatNumber : number;
+classType: string;
+price: number;
+isAvailable: boolean;
 }
 
 @Injectable({
   providedIn: 'root'
 })
 export class FlightService {
-  private API_URL_FLIGHTS = "http://localhost:8081/ticketreservation/api/flight/allFlight" ;
   private API_URL_RESERVATION_DATA = "http://localhost:8081/ticketreservation/api/reservation/" ;
+  private API_URL_FLIGHTS = "http://localhost:8081/ticketreservation/api/flight/allFlight" ;
   constructor(private http: HttpClient, private authenticationService: AuthenticationService) { }
 
   getAllFlights(): Observable<Array<FlightModel>> {
-    return this.http.get<Array<FlightModel>>(this.API_URL_FLIGHTS);
-    // .pipe(
-    //   map(response => response.flights),
-    //   catchError(() => {
-    //     console.log('error in connection with server');
-    //     return of([]);
-    //   })
-    // );
+    return this.http.get<Array<FlightModel>>(this.API_URL_FLIGHTS)
+    .pipe(
+      map(response => response),
+      catchError(() => {
+        console.log('error in connection with server');
+        return of([]);
+      })
+    );
   }
 
   getFilters():  Observable<Array<FlightModel>>{
     return this.http.get<Array<FlightModel>>("http://localhost:8081/ticketreservation/api/reservation/allMyReservation",  { headers: this.getAuthorizationHeaders() });
   }
 
-  private getAuthorizationHeaders(): HttpHeaders {
-    const token = this.authenticationService.tokenValue;
-    return new HttpHeaders().set('Authorization', `${token}`);
-  }
-  getFlightToReservation(id: number): Observable<FlightModel> {
-    return this.http.get<FlightModel>(this.API_URL_RESERVATION_DATA+`${id}`, { headers: this.getAuthorizationHeaders() }).pipe(
+  getFlightToReservation(id: number): Observable<DataToPrepareReservation> {
+    return this.http.get<DataToPrepareReservation>(this.API_URL_RESERVATION_DATA+`${id}`, { headers: this.getAuthorizationHeaders() }).pipe(
       catchError(() => {
         console.log('error in connection with server');
-        window.location.replace('/login');
         return EMPTY;
       })
     );
   }
+
+  private getAuthorizationHeaders(): HttpHeaders {
+    const token = this.authenticationService.tokenValue;
+    return new HttpHeaders().set('Authorization', `${token}`);
+  }
+ 
 }

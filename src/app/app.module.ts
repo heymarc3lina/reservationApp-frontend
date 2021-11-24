@@ -17,6 +17,8 @@ import {MaterialExampleModule} from './material.modules';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { ConfirmReservationComponent } from './confirm-reservation/confirm-reservation.component';
+import { ConfirmRegistrationComponentComponent } from './confirm-registration-component/confirm-registration-component.component';
+import { ReservationComponent } from './reservation/reservation.component';
 
 @NgModule({
   declarations: [
@@ -25,7 +27,9 @@ import { ConfirmReservationComponent } from './confirm-reservation/confirm-reser
     RegisterComponent,
     LoginComponent,
     FlightsComponent,
-    ConfirmReservationComponent
+    ConfirmReservationComponent,
+    ConfirmRegistrationComponentComponent,
+    ReservationComponent
   ],
   imports: [
     BrowserModule,

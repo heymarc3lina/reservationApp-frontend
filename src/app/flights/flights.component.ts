@@ -2,7 +2,8 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { FlightModel, FlightService } from '../service/flight.service';
+import { AuthenticationService } from '../service/authentication.service';
+import { DataToPrepareReservation, FlightModel, FlightService } from '../service/flight.service';
 
 
 @Component({
@@ -11,10 +12,12 @@ import { FlightModel, FlightService } from '../service/flight.service';
   styleUrls: ['./flights.component.css']
 })
 export class FlightsComponent implements OnInit, OnDestroy {
+  reservation: DataToPrepareReservation | undefined;
   available = "AVAILABLE"
   reservationActive = true;
   listOfFlights: Array<FlightModel> = [];
   listOfFlights1: Array<FlightModel> = [];
+  isLogged =true;
 
   listOfArrivalAirports: Array<String> = [];
   listOfDepartureAirports: Array<String> = [];
@@ -33,11 +36,12 @@ export class FlightsComponent implements OnInit, OnDestroy {
   maxPrice = 0;
   minPrice = 0;
   defaultOption = "Wszystkie";
+  URL = "flights/";
 
   numberOfReadyFlights = 0;
   dataLoaded = false;
 
-  constructor(private flightService: FlightService, private fb: FormBuilder, private router: Router) {
+  constructor(private flightService: FlightService, private fb: FormBuilder, private router: Router, private authService: AuthenticationService) {
     this.dataForms = this.fb.group({
       // date: [''||   Validators.required
       // ], 
@@ -80,9 +84,7 @@ export class FlightsComponent implements OnInit, OnDestroy {
 
       //   });
     });
-    this.flightService.getFilters().subscribe(flights => {
-      this.listOfFlights1 = flights;
-    });
+  
     this.dataLoaded = true;
   };
 
@@ -115,40 +117,31 @@ export class FlightsComponent implements OnInit, OnDestroy {
   }
 
   setFormsSubscriptions(): void {
-    // this.minPriceSubscription = this.dataForms.get('minPrice')?.valueChanges.subscribe(minValue => {
-    //   this.filterFlights();
-    // });
-    // this.minPriceSubscription = this.dataForms.get('minPrice')?.valueChanges.subscribe(newValue => {
-    //   if (!newValue) {
-    //     this.dataForms.get('minPrice')?.setValue(this.minPrice);
-    //   }
-    // });
-    // this.maxPriceSubscription = this.dataForms.get('maxPrice')?.valueChanges.subscribe(maxValue => {
-    //   this.filterFlights();
-    // });
+
     this.maxPriceSubscription = this.dataForms.get('maxPrice')?.valueChanges.subscribe(newValue => {
       if (!newValue) {
         this.dataForms.get('maxPrice')?.setValue(this.maxPrice);
       }
     });
 
+    // this.formChangesSubscription = this.dataForms.valueChanges.subscribe(changedValue => {
+    //   this.filterFlights();
 
-    // this.arrivalAirportSubscription = this.dataForms.get('inputArrivalAirports')?.valueChanges.subscribe(newValue => {
-    //   if (!newValue) {
-    //     this.dataForms.get('inputArrivalAirports')?.setValue(this.defaultOption);
-    //   }
     // });
-    // this.departureAirportSubscription = this.dataForms.get('inputDepartureAirports')?.valueChanges.subscribe(newValue => {
-    //   if (!newValue) {
-    //     this.dataForms.get('inputDepartureAirports')?.setValue(this.defaultOption);
-    //   }
-    // });
+  }
 
-
-    this.formChangesSubscription = this.dataForms.valueChanges.subscribe(changedValue => {
-      this.filterFlights();
-
-    });
+  reservationClick(flightId: number): void{
+    if(this.authService.isLoged()){
+      window.location.replace(this.URL+flightId);
+      this.isLogged = true;
+      this.flightService.getFlightToReservation((flightId)).subscribe(flight => {
+        this.reservation = flight;
+      });
+    }else {
+      this.isLogged = false;
+    }
+    
+    
   }
 
   unsubscribeForms(): void {
