@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { AuthenticationService } from '../service/authentication.service';
-import { DataToPrepareReservation, FlightService } from '../service/flight.service';
+import { DataToPrepareReservation, FlightService, Seats } from '../service/flight.service';
 import { ReservationService } from '../service/reservation.service';
 
 
@@ -11,8 +11,8 @@ import { ReservationService } from '../service/reservation.service';
   styleUrls: ['./reservation.component.css']
 })
 export class ReservationComponent implements OnInit {
-
-  reservation: DataToPrepareReservation | undefined;
+  seatsChecked: Array<Seats> = [];
+  reservation: Array<DataToPrepareReservation> = [];
   isUserLoged = false;
   dataLoaded = false;
 
@@ -24,6 +24,30 @@ export class ReservationComponent implements OnInit {
   ngOnInit(): void {
 
     this.isUserLoged = this.authenticationService.isLoged();
+    const routeParams = this.route.snapshot.paramMap;
+    const flightId = Number(routeParams.get('flightId'));
+    this.retriveFlight(flightId);
   }
+
+  retriveFlight(flightId: number) : void{
+      this.flightService.getFlightToReservation(flightId).subscribe(flight =>{
+      this.reservation.push(flight);
+      this.dataLoaded = true;
+    })
+  }
+
+  sendCheckedSeats(): void{
+    this.seatsChecked = [];
+      this.reservation.forEach(res => {
+            res.seats.forEach(seat => {
+                if(seat.checked){
+                  this.seatsChecked.push(seat);
+                }
+            });
+      });
+      console.log(this.seatsChecked);
+  }
+
+
 
 }

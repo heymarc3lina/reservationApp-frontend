@@ -53,7 +53,7 @@
         <td> <i class="fa fa-plane" aria-hidden="true"></i> {{flight.departureAirports}}  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
           <i class="fa fa-arrow-right" aria-hidden="true">  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  </i>
           <i class="fa fa-plane" aria-hidden="true"></i> {{flight.arrivalAirports}}  </td>
-        <td> {{flight.arrivalDate}}  &nbsp;&nbsp; <i class="fa fa-arrow-right" aria-hidden="true">  &nbsp;&nbsp; </i> {{flight.departureDate}}</td>
+        <td> {{flight.departureDate}} &nbsp;&nbsp; <i class="fa fa-arrow-right" aria-hidden="true">  &nbsp;&nbsp; </i> {{flight.arrivalDate}}</td>
         <td>od {{flight.minPrice}}</td>
         <td>{{flight.flightStatus}}</td>
         <td ><button *ngIf="flight.isReservationActive" (click)="reservationClick(flight.id)" class="btn btn-primary" >

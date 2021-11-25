@@ -12,7 +12,6 @@ import { DataToPrepareReservation, FlightModel, FlightService } from '../service
   styleUrls: ['./flights.component.css']
 })
 export class FlightsComponent implements OnInit, OnDestroy {
-  reservation: DataToPrepareReservation | undefined;
   available = "AVAILABLE"
   reservationActive = true;
   listOfFlights: Array<FlightModel> = [];
@@ -134,9 +133,7 @@ export class FlightsComponent implements OnInit, OnDestroy {
     if(this.authService.isLoged()){
       window.location.replace(this.URL+flightId);
       this.isLogged = true;
-      this.flightService.getFlightToReservation((flightId)).subscribe(flight => {
-        this.reservation = flight;
-      });
+      
     }else {
       this.isLogged = false;
     }

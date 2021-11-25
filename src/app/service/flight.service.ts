@@ -31,6 +31,7 @@ seatNumber : number;
 classType: string;
 price: number;
 isAvailable: boolean;
+checked ? : boolean;
 }
 
 @Injectable({
