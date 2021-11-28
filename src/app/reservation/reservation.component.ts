@@ -11,10 +11,14 @@ import { ReservationService } from '../service/reservation.service';
   styleUrls: ['./reservation.component.css']
 })
 export class ReservationComponent implements OnInit {
-  seatsChecked: Array<Seats> = [];
-  reservation: Array<DataToPrepareReservation> = [];
+  seatsChecked: Array<Number> = [];
+  reservation: DataToPrepareReservation | undefined;
   isUserLoged = false;
   dataLoaded = false;
+  isSomethingClicked = false;
+  succesfullyMakingReservation = false;
+  errorDuringMakingReservation = false;
+
 
   reservationSuccesfully = false;
   errorDuringReservation = false;
@@ -31,23 +35,39 @@ export class ReservationComponent implements OnInit {
 
   retriveFlight(flightId: number) : void{
       this.flightService.getFlightToReservation(flightId).subscribe(flight =>{
-      this.reservation.push(flight);
+      this.reservation  = flight;
       this.dataLoaded = true;
     })
   }
 
   sendCheckedSeats(): void{
+    if(this.reservation){
+    this.isSomethingClicked = false;
     this.seatsChecked = [];
-      this.reservation.forEach(res => {
-            res.seats.forEach(seat => {
+    this.reservation?.seats.forEach(seat => {
                 if(seat.checked){
-                  this.seatsChecked.push(seat);
+                  this.seatsChecked.push(seat.id);
                 }
-            });
-      });
+              });
+
+      if(this.seatsChecked.length < 1){
+        this.isSomethingClicked = true;
+      }else{
+        console.log(this.seatsChecked);
+        this.reservationService.createReservation( this.reservation?.id ,this.seatsChecked ).subscribe(response =>{
+          console.log(response);
+          if(response){
+              this.succesfullyMakingReservation = true;
+              window.location.replace("/reservationConfirm");
+          }
+        });
+      }
       console.log(this.seatsChecked);
+  }else {
+    this.errorDuringMakingReservation = true;
   }
 
+}
 
 
 }
