@@ -41,6 +41,7 @@ export class ReservationComponent implements OnInit {
   }
 
   sendCheckedSeats(): void{
+    this.dataLoaded = false;
     if(this.reservation){
     this.isSomethingClicked = false;
     this.seatsChecked = [];

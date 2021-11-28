@@ -1,0 +1,29 @@
+<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+<br>
+<h4>Twoje loty</h4>
+<br>
+<table class= "table">
+    <thead>
+      <tr>
+        <th>Lotniska</th>
+        <th>Data przylotu i odlotu</th>
+        <th>Samolot</th>
+        <th>Miejsce</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor = "let reservation of listOfUserReservation" style="height:60px;">
+          <td> <i class="fa fa-plane" aria-hidden="true"></i> {{reservation.departureAirport}}  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <i class="fa fa-arrow-right" aria-hidden="true">  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  </i>
+            <i class="fa fa-plane" aria-hidden="true"></i> {{reservation.arrivalAirport}}  </td>
+          <td> {{reservation.departureDate}} &nbsp;&nbsp; <i class="fa fa-arrow-right" aria-hidden="true">  &nbsp;&nbsp; </i> {{reservation.arrivalDate}}</td>
+          <td> {{reservation.planeName}}</td>
+          <td> {{reservation.seatNumber}}</td>
+          <td>{{reservation.reservationStatus}}</td>
+          <td ><button  *ngIf="reservation.isReservationActive" (click)="reservationCancelClick(reservation.reservationId)" class="btn btn-primary" >
+            Anuluj
+          </button></td>
+      </tr>
+    </tbody>
+  </table>

@@ -19,6 +19,7 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { ConfirmReservationComponent } from './confirm-reservation/confirm-reservation.component';
 import { ConfirmRegistrationComponentComponent } from './confirm-registration-component/confirm-registration-component.component';
 import { ReservationComponent } from './reservation/reservation.component';
+import { UserReservationListComponent } from './user-reservation-list/user-reservation-list.component';
 
 @NgModule({
   declarations: [
@@ -29,7 +30,8 @@ import { ReservationComponent } from './reservation/reservation.component';
     FlightsComponent,
     ConfirmReservationComponent,
     ConfirmRegistrationComponentComponent,
-    ReservationComponent
+    ReservationComponent,
+    UserReservationListComponent
   ],
   imports: [
     BrowserModule,
