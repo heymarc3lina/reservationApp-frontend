@@ -39,7 +39,7 @@
         <input type="number" class="form-control" id="maxPrice" formControlName="maxPrice">
       </div>
  </form>
-<table class= "table">
+<table *ngIf="!isManager" class= "table">
   <thead>
     <tr>
       <th>Lotniska</th>
@@ -58,6 +58,36 @@
         <td>{{flight.flightStatus}}</td>
         <td ><button *ngIf="flight.isReservationActive" (click)="reservationClick(flight.id)" class="btn btn-primary" >
           Rezerwuj
+        </button></td>
+    </tr>
+  </tbody>
+</table>
+<table *ngIf="isManager" class= "table">
+  <thead>
+    <tr>
+      <th>Lotniska</th>
+      <th>Data przylotu i odlotu</th>
+      <th>Cena</th>
+      <th>Status</th>
+      <th>Zmień status</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor = "let flight of filteredListOfAllFlights"  style="height:60px;">
+        <td> <i class="fa fa-plane" aria-hidden="true"></i> {{flight.flightDto.departureAirports}}  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          <i class="fa fa-arrow-right" aria-hidden="true">  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  </i>
+          <i class="fa fa-plane" aria-hidden="true"></i> {{flight.flightDto.arrivalAirports}}  </td>
+        <td> {{flight.flightDto.departureDate}} &nbsp;&nbsp; <i class="fa fa-arrow-right" aria-hidden="true">  &nbsp;&nbsp; </i> {{flight.flightDto.arrivalDate}}</td>
+        <td>od {{flight.flightDto.minPrice}}</td>
+        <td>{{flight.flightDto.flightStatus}}</td>
+        <td> 
+          <div class="btn-group" role="group" aria-label="Basic example">
+              <button type="button" class="btn btn-secondary" *ngFor="let status of flight.flightStatuses" (click)="flightStatusChangeClick(flight.flightDto.id, status)"> {{status}} </button>
+          </div>
+        </td>
+        <!-- (click)="flightEditionClick(flight.flightDto.id)" -->
+        <td><button *ngIf="flight.flightDto.isNewStatus"  class="btn btn-primary" >
+          Edytuj
         </button></td>
     </tr>
   </tbody>

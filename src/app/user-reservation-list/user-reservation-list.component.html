@@ -9,6 +9,7 @@
         <th>Data przylotu i odlotu</th>
         <th>Samolot</th>
         <th>Miejsce</th>
+        <th>Data rezerwacji</th>
         <th>Status</th>
       </tr>
     </thead>
@@ -20,6 +21,7 @@
           <td> {{reservation.departureDate}} &nbsp;&nbsp; <i class="fa fa-arrow-right" aria-hidden="true">  &nbsp;&nbsp; </i> {{reservation.arrivalDate}}</td>
           <td> {{reservation.planeName}}</td>
           <td> {{reservation.seatNumber}}</td>
+          <td>{{reservation.reservationDate}}</td>
           <td>{{reservation.reservationStatus}}</td>
           <td ><button  *ngIf="reservation.isReservationActive" (click)="reservationCancelClick(reservation.reservationId)" class="btn btn-primary" >
             Anuluj

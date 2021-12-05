@@ -3,7 +3,7 @@ import { AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, Valida
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { AuthenticationService } from '../service/authentication.service';
-import { DataToPrepareReservation, FlightModel, FlightService } from '../service/flight.service';
+import { FlightStatus, FlightModel, FlightService , FlightWithStatuses, Role, StatusChange} from '../service/flight.service';
 
 
 @Component({
@@ -15,13 +15,18 @@ export class FlightsComponent implements OnInit, OnDestroy {
   available = "AVAILABLE"
   reservationActive = true;
   listOfFlights: Array<FlightModel> = [];
-  listOfFlights1: Array<FlightModel> = [];
-  isLogged =true;
+  listOfAllFlights: Array<FlightWithStatuses> = [];
+  whoIsIt:  Role | undefined;
+  statusChange: StatusChange | undefined;
+  isLogged = true;
+  isManager : Boolean | undefined;
+  succesfullyCChanged: boolean | undefined;
 
   listOfArrivalAirports: Array<String> = [];
   listOfDepartureAirports: Array<String> = [];
 
   filteredListOfFlights: Array<FlightModel> = [];
+  filteredListOfAllFlights: Array<FlightWithStatuses> = [];
 
   dataForms: FormGroup = new FormGroup({});
 
@@ -39,6 +44,7 @@ export class FlightsComponent implements OnInit, OnDestroy {
 
   numberOfReadyFlights = 0;
   dataLoaded = false;
+  
 
   constructor(private flightService: FlightService, private fb: FormBuilder, private router: Router, private authService: AuthenticationService) {
     this.dataForms = this.fb.group({
@@ -59,21 +65,24 @@ export class FlightsComponent implements OnInit, OnDestroy {
   getAllFlights(): void {
     this.dataLoaded = false;
     this.numberOfReadyFlights = 0;
-    this.flightService.getAllFlights().subscribe(flights => {
-      flights?.forEach(flight => {
-        if (flight.flightStatus == this.available) {
-          flight.flightStatus = "Dostępny";
-          flight.isReservationActive = true;
-        } else {
-          flight.flightStatus = "Pełny"
-          flight.isReservationActive = false;
+    this.isManager = false;
+    if(this.authService.isLoged()){
+      this.flightService.whoIsIt().subscribe(who=>{
+        console.log(who.role);
+        if(who.role == "USER"){
+         console.log("user");
+         this.flightsForUser();
+        }else if(who.role == "MANAGER") {
+          this.isManager = true;
+         console.log("manager");
+         this.flightsForManager();
         }
-        this.listOfFlights.push(flight);
-        this.numberOfReadyFlights++;
-      });
-      if (this.numberOfReadyFlights > flights.length - 2) {
-        this.prepareForms();
-      }
+       });
+    }else{
+      this.flightsForUser();
+    }
+    
+   
       // flights?.forEach(flight => {
       //   if(flight.flightStatus == )
       //   this.listOfFlights.push(flight);
@@ -82,12 +91,47 @@ export class FlightsComponent implements OnInit, OnDestroy {
       //     }
 
       //   });
-    });
+    
   
     this.dataLoaded = true;
   };
 
+flightsForUser() : void{
+  this.flightService.getAllFlights().subscribe(flights => {
+  flights?.forEach(flight => {
+    if (flight.flightStatus == this.available) {
+      flight.flightStatus = "Dostępny";
+      flight.isReservationActive = true;
+    } else {
+      flight.flightStatus = "Pełny"
+      flight.isReservationActive = false;
+    }
+    this.listOfFlights.push(flight);
+    this.numberOfReadyFlights++;
+  });
+  if (this.numberOfReadyFlights > flights.length - 2) {
+    this.prepareForms();
+  }
+});
+}
 
+flightsForManager() : void{
+  this.flightService.getAllExistingFlights().subscribe(flights => {
+  flights?.forEach(flight => {
+   console.log(flight)
+   if(flight.flightDto.flightStatus == "NEW"){
+     flight.flightDto.isNewStatus = true;
+   }else{
+    flight.flightDto.isNewStatus = false;
+   }
+    this.listOfAllFlights.push(flight);
+    this.numberOfReadyFlights++;
+  });
+  if (this.numberOfReadyFlights > flights.length - 2) {
+    this.prepareFormsForManager();
+  }
+});
+}
   prepareForms(): void {
     this.listOfArrivalAirports.push(this.defaultOption);
     this.listOfDepartureAirports.push(this.defaultOption);
@@ -115,6 +159,34 @@ export class FlightsComponent implements OnInit, OnDestroy {
     this.filterFlights();
   }
 
+
+  prepareFormsForManager(): void {
+    this.listOfArrivalAirports.push(this.defaultOption);
+    this.listOfDepartureAirports.push(this.defaultOption);
+    this.listOfAllFlights.forEach(flight => {
+      if (flight.flightDto.minPrice > this.maxPrice) {
+        this.maxPrice = flight.flightDto.minPrice;
+      }
+      if (!this.listOfArrivalAirports.includes(flight.flightDto.arrivalAirports)) {
+        this.listOfArrivalAirports.push(flight.flightDto.arrivalAirports);
+      }
+      if (!this.listOfDepartureAirports.includes(flight.flightDto.departureAirports)) {
+        this.listOfDepartureAirports.push(flight.flightDto.departureAirports);
+      }
+    });
+
+    this.dataForms = this.fb.group({
+      date: ['' || Validators.required],
+      minPrice: [0],
+      maxPrice: [this.maxPrice],
+      inputArrivalAirports: [this.listOfArrivalAirports[0] || ''],
+      inputDepartureAirports: [this.listOfDepartureAirports[0] || '']
+    });
+
+    this.setFormsSubscriptions();
+    this.filterFlightsForManager();
+  }
+
   setFormsSubscriptions(): void {
 
     this.maxPriceSubscription = this.dataForms.get('maxPrice')?.valueChanges.subscribe(newValue => {
@@ -123,10 +195,15 @@ export class FlightsComponent implements OnInit, OnDestroy {
       }
     });
 
-    // this.formChangesSubscription = this.dataForms.valueChanges.subscribe(changedValue => {
-    //   this.filterFlights();
+    this.formChangesSubscription = this.dataForms.valueChanges.subscribe(changedValue => {
+      if(this.isManager){
+        this.filterFlightsForManager();
+      }else{
+        this.filterFlights();
+      }
+      
 
-    // });
+    });
   }
 
   reservationClick(flightId: number): void{
@@ -141,6 +218,18 @@ export class FlightsComponent implements OnInit, OnDestroy {
     
   }
 
+  flightStatusChangeClick(flightId: number, status: FlightStatus ): void{
+    this.statusChange = new StatusChange(flightId, status);
+    console.log( this.statusChange);
+    this.flightService.changeFlightStatus(this.statusChange).subscribe(response =>{
+      if(response){
+          this.succesfullyCChanged = true;
+          window.location.reload();
+      }
+    });
+  }
+  
+
   unsubscribeForms(): void {
     this.maxPriceSubscription?.unsubscribe();
     this.minPriceSubscription?.unsubscribe();
@@ -151,6 +240,7 @@ export class FlightsComponent implements OnInit, OnDestroy {
   }
 
   filterFlights(): void {
+    console.log("filter flights");
     this.dataLoaded = false;
     var isDate = (this.dataForms.get('date')?.value as Date) instanceof Date;
 
@@ -191,6 +281,59 @@ export class FlightsComponent implements OnInit, OnDestroy {
         } else {
           return flight.minPrice >= this.dataForms.get('minPrice')?.value && flight.minPrice <= this.dataForms.get('maxPrice')?.value
             && this.dataForms.get('inputArrivalAirports')?.value == flight.arrivalAirports && this.dataForms.get('inputDepartureAirports')?.value == flight.departureAirports;
+        }
+      });
+    }
+    // console.log((this.dataForms.get('date')?.value as Date).toLocaleString());
+    console.log(this.dataLoaded);
+    this.dataLoaded = true;
+    console.log(this.dataLoaded);
+  }
+
+  filterFlightsForManager(): void {
+    console.log("filter flights");
+    this.dataLoaded = false;
+    var isDate = (this.dataForms.get('date')?.value as Date) instanceof Date;
+
+    if (isDate) {
+      this.filteredListOfAllFlights = this.listOfAllFlights.filter(flight => {
+        if (this.dataForms.get('inputArrivalAirports')?.value == this.defaultOption && this.dataForms.get('inputDepartureAirports')?.value == this.defaultOption) {
+          return flight.flightDto.minPrice >= this.dataForms.get('minPrice')?.value && flight.flightDto.minPrice <= this.dataForms.get('maxPrice')?.value
+            && this.compareDate(flight.flightDto.arrivalDate.toLocaleString(), (this.dataForms.get('date')?.value as Date).toLocaleString());
+        }
+        else if (this.dataForms.get('inputArrivalAirports')?.value == this.defaultOption && this.dataForms.get('inputDepartureAirports')?.value != this.defaultOption) {
+          return flight.flightDto.minPrice >= this.dataForms.get('minPrice')?.value && flight.flightDto.minPrice <= this.dataForms.get('maxPrice')?.value
+            && this.dataForms.get('inputDepartureAirports')?.value == flight.flightDto.departureAirports
+            && this.compareDate(flight.flightDto.arrivalDate.toLocaleString(), (this.dataForms.get('date')?.value as Date).toLocaleString());;
+        }
+        else if (this.dataForms.get('inputArrivalAirports')?.value != this.defaultOption && this.dataForms.get('inputDepartureAirports')?.value == this.defaultOption) {
+          return flight.flightDto.minPrice >= this.dataForms.get('minPrice')?.value && flight.flightDto.minPrice <= this.dataForms.get('maxPrice')?.value
+            && this.dataForms.get('inputArrivalAirports')?.value == flight.flightDto.arrivalAirports
+            && this.compareDate(flight.flightDto.arrivalDate.toLocaleString(), (this.dataForms.get('date')?.value as Date).toLocaleString());;
+        } else {
+          return flight.flightDto.minPrice >= this.dataForms.get('minPrice')?.value && flight.flightDto.minPrice <= this.dataForms.get('maxPrice')?.value
+            && this.dataForms.get('inputArrivalAirports')?.value == flight.flightDto.arrivalAirports
+            && this.dataForms.get('inputDepartureAirports')?.value == flight.flightDto.departureAirports
+            && this.compareDate(flight.flightDto.arrivalDate.toLocaleString(), (this.dataForms.get('date')?.value as Date).toLocaleString());;
+        }
+      });
+    }
+    else {
+      this.filteredListOfAllFlights = this.listOfAllFlights.filter(flight => {
+        if (this.dataForms.get('inputArrivalAirports')?.value == this.defaultOption && this.dataForms.get('inputDepartureAirports')?.value == this.defaultOption) {
+          return flight.flightDto.minPrice >= this.dataForms.get('minPrice')?.value && flight.flightDto.minPrice <= this.dataForms.get('maxPrice')?.value;
+        }
+        else if (this.dataForms.get('inputArrivalAirports')?.value == this.defaultOption && this.dataForms.get('inputDepartureAirports')?.value != this.defaultOption) {
+          return flight.flightDto.minPrice >= this.dataForms.get('minPrice')?.value && flight.flightDto.minPrice <= this.dataForms.get('maxPrice')?.value
+            && this.dataForms.get('inputDepartureAirports')?.value == flight.flightDto.departureAirports;
+        }
+        else if (this.dataForms.get('inputArrivalAirports')?.value != this.defaultOption && this.dataForms.get('inputDepartureAirports')?.value == this.defaultOption) {
+          return flight.flightDto.minPrice >= this.dataForms.get('minPrice')?.value && flight.flightDto.minPrice <= this.dataForms.get('maxPrice')?.value
+            && this.dataForms.get('inputArrivalAirports')?.value == flight.flightDto.arrivalAirports;
+        } else {
+          return flight.flightDto.minPrice >= this.dataForms.get('minPrice')?.value && flight.flightDto.minPrice <= this.dataForms.get('maxPrice')?.value
+            && this.dataForms.get('inputArrivalAirports')?.value == flight.flightDto.arrivalAirports 
+            && this.dataForms.get('inputDepartureAirports')?.value == flight.flightDto.departureAirports;
         }
       });
     }
