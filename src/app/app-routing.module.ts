@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { AllUserReservationListComponent } from './all-user-reservation-list/all-user-reservation-list.component';
 import { ConfirmRegistrationComponentComponent } from './confirm-registration-component/confirm-registration-component.component';
 import { ConfirmReservationComponent } from './confirm-reservation/confirm-reservation.component';
 import { FlightsComponent } from './flights/flights.component';
@@ -10,6 +11,7 @@ import { AuthGuardService } from './service/auth-guard.service';
 import { FlightService } from './service/flight.service';
 import { UserReservationListComponent } from './user-reservation-list/user-reservation-list.component';
 
+
 const routes: Routes = [
   { path: 'register', component: RegisterComponent },
   { path: 'login', component: LoginComponent },
@@ -18,7 +20,8 @@ const routes: Routes = [
   { path: 'confirm', component: ConfirmRegistrationComponentComponent},
   { path: 'reservationConfirm', component: ConfirmReservationComponent, canActivate: [AuthGuardService]},
   { path: 'flights/:flightId', component: ReservationComponent, canActivate: [AuthGuardService]},
-  {path:  'myReservation', component: UserReservationListComponent, canActivate: [AuthGuardService] }
+  {path:  'myReservation', component: UserReservationListComponent, canActivate: [AuthGuardService]}, 
+  {path:  'allReservation', component: AllUserReservationListComponent, canActivate: [AuthGuardService]}
 ];
 
 @NgModule({

@@ -1,0 +1,41 @@
+<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+<br>
+<h4>Wszystkie rezerwacje</h4>
+<br>
+<table class= "table">
+    <thead>
+      <tr>
+        <th>Rezerwujący</th>
+        <th>Lotniska</th>
+        <th>Data przylotu i odlotu</th>
+        <th>Samolot</th>
+        <th>Miejsce</th>
+        <th>Data rezerwacji</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor = "let reservation of listOfReservation" style="height:60px;">
+        <td> {{reservation.userName}} &nbsp;  {{reservation.userSurname}} <br> {{reservation.userEmail}}</td>
+          <td> <i class="fa fa-plane" aria-hidden="true"></i> {{reservation.reservationDto.departureAirport}}  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <i class="fa fa-arrow-right" aria-hidden="true">  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  </i>
+            <i class="fa fa-plane" aria-hidden="true"></i> {{reservation.reservationDto.arrivalAirport}}  </td>
+          <td> {{reservation.reservationDto.departureDate}} &nbsp;&nbsp; <i class="fa fa-arrow-right" aria-hidden="true">  &nbsp;&nbsp; </i> {{reservation.reservationDto.arrivalDate}}</td>
+          <td> {{reservation.reservationDto.planeName}}</td>
+          <td> {{reservation.reservationDto.seatNumber}}</td>
+          <td>{{reservation.reservationDto.reservationDate}}</td>
+          <td>{{reservation.reservationDto.reservationStatus}}</td>
+          <td ><button  *ngIf="reservation.reservationDto.isReservationActive" (click)="reservationCancelClick(reservation.reservationDto.reservationId)" class="btn btn-primary" >
+            Anuluj
+          </button></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- <nav aria-label="...">
+    <ul class="pagination pagination-lg">
+      <li class="page-item disabled">
+        <!-- <li *ngFor="let item of page ;let i = index" class="page-item"><a class="page-link" href="#">{{i}}</a></li> -->
+        <!-- <li class="page-item"><a class="page-link" href="#">2</a></li>
+    </ul>
+  </nav> --> 

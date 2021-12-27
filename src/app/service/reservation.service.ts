@@ -6,6 +6,13 @@ import { AuthenticationService } from './authentication.service';
 import { Seats } from './flight.service';
 
 
+export interface AllReservation{
+  userName: string;
+  userSurname: string;
+  userEmail: string;
+  reservationDto:AllUserReservation;
+}
+
 export interface AllUserReservation{
   reservationId: number;
   reservationDate: Date;
@@ -26,6 +33,7 @@ export interface AllUserReservation{
 export class ReservationService {
   private API_URL_CREATE_RESERVATION = "http://localhost:8081/ticketreservation/api/reservation/createReservation";
   private API_URL_USER_RESERVATION = "http://localhost:8081/ticketreservation/api/reservation/allMyReservation";
+  private API_URL_ALL_USER_RESERVATION = "http://localhost:8081/ticketreservation/api/reservation/allReservationForUsers";
   private API_URL_CANCEL_RESERVATION = "http://localhost:8081/ticketreservation/api/reservation/editStatus";
   constructor(private http: HttpClient, private authenticationService: AuthenticationService) { }
 
@@ -56,6 +64,15 @@ export class ReservationService {
 
   getUserReservation(): Observable<Array<AllUserReservation>> {
     return this.http.get<Array<AllUserReservation>>(this.API_URL_USER_RESERVATION, { headers: this.getAuthorizationHeaders() }).pipe(
+      catchError(() => {
+        console.log('error in connection with server');
+        return EMPTY;
+      })
+    );
+  }
+
+  getAllUsersReservation(): Observable<Array<AllReservation>> {
+    return this.http.get<Array<AllReservation>>(this.API_URL_ALL_USER_RESERVATION, { headers: this.getAuthorizationHeaders() }).pipe(
       catchError(() => {
         console.log('error in connection with server');
         return EMPTY;

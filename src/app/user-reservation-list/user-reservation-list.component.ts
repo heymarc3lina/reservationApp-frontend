@@ -12,6 +12,7 @@ export class UserReservationListComponent implements OnInit {
 listOfUserReservation : Array<AllUserReservation> = []
 dataLoaded = false;
 activeReservation = "ACTIVE";
+completedReservation = "COMPLETED"
 isactiveReservation = true;
 succesfullyCancelled = false;
   constructor(private route: ActivatedRoute, private authenticationService: AuthenticationService, private reservationService: ReservationService) { }
@@ -27,6 +28,9 @@ succesfullyCancelled = false;
         if (reservation.reservationStatus == this.activeReservation) {
           reservation.reservationStatus = "Aktywna"
           reservation.isReservationActive= true;
+        }else if(reservation.reservationStatus == this.completedReservation){
+          reservation.reservationStatus = "Zakończona"
+          reservation.isReservationActive= false;
         }else{
           reservation.reservationStatus = "Anulowana"
           reservation.isReservationActive= false;

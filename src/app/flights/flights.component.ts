@@ -248,21 +248,21 @@ flightsForManager() : void{
       this.filteredListOfFlights = this.listOfFlights.filter(flight => {
         if (this.dataForms.get('inputArrivalAirports')?.value == this.defaultOption && this.dataForms.get('inputDepartureAirports')?.value == this.defaultOption) {
           return flight.minPrice >= this.dataForms.get('minPrice')?.value && flight.minPrice <= this.dataForms.get('maxPrice')?.value
-            && this.compareDate(flight.arrivalDate.toLocaleString(), (this.dataForms.get('date')?.value as Date).toLocaleString());
+            && this.compareDate(flight.departureDate.toLocaleString(), (this.dataForms.get('date')?.value as Date).toLocaleString());
         }
         else if (this.dataForms.get('inputArrivalAirports')?.value == this.defaultOption && this.dataForms.get('inputDepartureAirports')?.value != this.defaultOption) {
           return flight.minPrice >= this.dataForms.get('minPrice')?.value && flight.minPrice <= this.dataForms.get('maxPrice')?.value
             && this.dataForms.get('inputDepartureAirports')?.value == flight.departureAirports
-            && this.compareDate(flight.arrivalDate.toLocaleString(), (this.dataForms.get('date')?.value as Date).toLocaleString());;
+            && this.compareDate(flight.departureDate.toLocaleString(), (this.dataForms.get('date')?.value as Date).toLocaleString());;
         }
         else if (this.dataForms.get('inputArrivalAirports')?.value != this.defaultOption && this.dataForms.get('inputDepartureAirports')?.value == this.defaultOption) {
           return flight.minPrice >= this.dataForms.get('minPrice')?.value && flight.minPrice <= this.dataForms.get('maxPrice')?.value
             && this.dataForms.get('inputArrivalAirports')?.value == flight.arrivalAirports
-            && this.compareDate(flight.arrivalDate.toLocaleString(), (this.dataForms.get('date')?.value as Date).toLocaleString());;
+            && this.compareDate(flight.departureDate.toLocaleString(), (this.dataForms.get('date')?.value as Date).toLocaleString());;
         } else {
           return flight.minPrice >= this.dataForms.get('minPrice')?.value && flight.minPrice <= this.dataForms.get('maxPrice')?.value
             && this.dataForms.get('inputArrivalAirports')?.value == flight.arrivalAirports && this.dataForms.get('inputDepartureAirports')?.value == flight.departureAirports
-            && this.compareDate(flight.arrivalDate.toLocaleString(), (this.dataForms.get('date')?.value as Date).toLocaleString());;
+            && this.compareDate(flight.departureDate.toLocaleString(), (this.dataForms.get('date')?.value as Date).toLocaleString());;
         }
       });
     }
@@ -299,22 +299,22 @@ flightsForManager() : void{
       this.filteredListOfAllFlights = this.listOfAllFlights.filter(flight => {
         if (this.dataForms.get('inputArrivalAirports')?.value == this.defaultOption && this.dataForms.get('inputDepartureAirports')?.value == this.defaultOption) {
           return flight.flightDto.minPrice >= this.dataForms.get('minPrice')?.value && flight.flightDto.minPrice <= this.dataForms.get('maxPrice')?.value
-            && this.compareDate(flight.flightDto.arrivalDate.toLocaleString(), (this.dataForms.get('date')?.value as Date).toLocaleString());
+            && this.compareDate(flight.flightDto.departureDate.toLocaleString(), (this.dataForms.get('date')?.value as Date).toLocaleString());
         }
         else if (this.dataForms.get('inputArrivalAirports')?.value == this.defaultOption && this.dataForms.get('inputDepartureAirports')?.value != this.defaultOption) {
           return flight.flightDto.minPrice >= this.dataForms.get('minPrice')?.value && flight.flightDto.minPrice <= this.dataForms.get('maxPrice')?.value
             && this.dataForms.get('inputDepartureAirports')?.value == flight.flightDto.departureAirports
-            && this.compareDate(flight.flightDto.arrivalDate.toLocaleString(), (this.dataForms.get('date')?.value as Date).toLocaleString());;
+            && this.compareDate(flight.flightDto.departureDate.toLocaleString(), (this.dataForms.get('date')?.value as Date).toLocaleString());;
         }
         else if (this.dataForms.get('inputArrivalAirports')?.value != this.defaultOption && this.dataForms.get('inputDepartureAirports')?.value == this.defaultOption) {
           return flight.flightDto.minPrice >= this.dataForms.get('minPrice')?.value && flight.flightDto.minPrice <= this.dataForms.get('maxPrice')?.value
             && this.dataForms.get('inputArrivalAirports')?.value == flight.flightDto.arrivalAirports
-            && this.compareDate(flight.flightDto.arrivalDate.toLocaleString(), (this.dataForms.get('date')?.value as Date).toLocaleString());;
+            && this.compareDate(flight.flightDto.departureDate.toLocaleString(), (this.dataForms.get('date')?.value as Date).toLocaleString());;
         } else {
           return flight.flightDto.minPrice >= this.dataForms.get('minPrice')?.value && flight.flightDto.minPrice <= this.dataForms.get('maxPrice')?.value
             && this.dataForms.get('inputArrivalAirports')?.value == flight.flightDto.arrivalAirports
             && this.dataForms.get('inputDepartureAirports')?.value == flight.flightDto.departureAirports
-            && this.compareDate(flight.flightDto.arrivalDate.toLocaleString(), (this.dataForms.get('date')?.value as Date).toLocaleString());;
+            && this.compareDate(flight.flightDto.departureDate.toLocaleString(), (this.dataForms.get('date')?.value as Date).toLocaleString());;
         }
       });
     }
