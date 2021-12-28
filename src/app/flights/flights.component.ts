@@ -41,6 +41,7 @@ export class FlightsComponent implements OnInit, OnDestroy {
   minPrice = 0;
   defaultOption = "Wszystkie";
   URL = "flights/";
+  EDIT_URL = "flights/edit/";
 
   numberOfReadyFlights = 0;
   dataLoaded = false;
@@ -209,6 +210,19 @@ flightsForManager() : void{
   reservationClick(flightId: number): void{
     if(this.authService.isLoged()){
       window.location.replace(this.URL+flightId);
+      this.isLogged = true;
+      
+    }else {
+      this.isLogged = false;
+    }
+    
+    
+  }
+
+  editionClick(flightId: number): void{
+   console.log("edition click");
+    if(this.authService.isLoged()){
+      window.location.replace(this.EDIT_URL+flightId);
       this.isLogged = true;
       
     }else {

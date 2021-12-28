@@ -1,0 +1,67 @@
+<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+ <div *ngIf="dataLoaded; else loading" >
+</div>
+  <form [formGroup]="dataForms" >
+    <div class="form-group ">
+      <label>Obecna data odlotu: &nbsp; {{departureDate}}</label>
+      <br>
+      <mat-form-field>
+        <input matInput [matDatepicker]="datePicker" placeholder="Wybierz date odlotu"  formControlName="dateDeparture">
+        <mat-datepicker-toggle [for]="datePicker" matSuffix></mat-datepicker-toggle>
+        <mat-datepicker #datePicker></mat-datepicker>
+      </mat-form-field>
+     <br>
+        <label for="timeDeparture">Podaj godzinę odlotu</label>
+        <input type="text" class="form-control w-25" id="timeDeparture" placeholder="hh:mm">
+      </div>
+      <br>
+    <div class="form-group ">
+        <label>Obecna data przylotu: &nbsp; {{arrivalDate}}</label>
+      <br>
+        <mat-form-field>
+          <input matInput  [matDatepicker]="datePicker1" placeholder="Wybierz date przylotu"  formControlName="dateArrival">
+          <mat-datepicker-toggle [for]="datePicker1" matSuffix></mat-datepicker-toggle>
+          <mat-datepicker #datePicker1></mat-datepicker>
+        </mat-form-field>
+        <br>
+        <label for="timeArrival">Podaj godzinę przylotu</label>
+        <input type="text" class="form-control w-25" id="timeArrival" placeholder="hh:mm">
+      </div>
+      <br>
+    <div class="form-group">
+        <label for="inputPlane">Samolot</label>
+        <select id="inputPlane" class="form-control"  id="inputPlane" formControlName="inputPlane">
+          <option *ngFor="let plane of listOfPlane"> {{plane.name}} </option>
+        </select>
+        <label >Ilość miejsce: {{seatQuantity}}</label>
+      </div>
+    <div class="form-group">
+        <label for="inputDepartureAirports">Lotnisko odlotu:</label>
+        <select id="inputDepartureAirports" class="form-control"  id="inputDepartureAirports" formControlName="inputDepartureAirports">
+          <option *ngFor="let airports of listOfDepartureAirports"> {{airports.city}} </option>
+        </select>
+      </div>
+    <div class="form-group">
+        <label for="inputArrivalAirports">Lotnisko przylotu:</label>
+        <select id="inputArrivalAirports" class="form-control"  id="inputArrivalAirports" formControlName="inputArrivalAirports">
+          <option *ngFor="let airports of listOfArrivalAirports"> {{airports.city}} </option>
+        </select>
+    </div>
+    <div form-item class="form-group ">
+        <label for="price" class="sr-only">Cena: </label>
+        <input type="number" class="form-control" id="price" formControlName="price">
+    </div>
+    <div class="form-group">
+        <label for="inputDepartureAirports">Status: &nbsp;&nbsp; {{status}}</label>
+        <br>
+        <br>
+        <a href="#" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">Zapisz</a>
+    </div>
+ </form>
+<ng-template #loading>
+  <div class="text-center">
+    <div class="spinner-border" role="status">
+      <span class="sr-only"></span>
+    </div>
+  </div>
+</ng-template>

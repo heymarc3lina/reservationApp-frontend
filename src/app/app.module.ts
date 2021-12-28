@@ -21,6 +21,7 @@ import { ConfirmRegistrationComponentComponent } from './confirm-registration-co
 import { ReservationComponent } from './reservation/reservation.component';
 import { UserReservationListComponent } from './user-reservation-list/user-reservation-list.component';
 import { AllUserReservationListComponent } from './all-user-reservation-list/all-user-reservation-list.component';
+import { EditFlightComponent } from './edit-flight/edit-flight.component';
 
 @NgModule({
   declarations: [
@@ -33,7 +34,8 @@ import { AllUserReservationListComponent } from './all-user-reservation-list/all
     ConfirmRegistrationComponentComponent,
     ReservationComponent,
     UserReservationListComponent,
-    AllUserReservationListComponent
+    AllUserReservationListComponent,
+    EditFlightComponent
   ],
   imports: [
     BrowserModule,

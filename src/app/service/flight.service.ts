@@ -18,6 +18,7 @@ export interface FlightModel {
   minPrice: number;
   isReservationActive:boolean;
   isNewStatus:boolean;
+  planeId: number;
 }
 
 export interface FlightWithStatuses{

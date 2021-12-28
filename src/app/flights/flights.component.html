@@ -86,7 +86,7 @@
           </div>
         </td>
         <!-- (click)="flightEditionClick(flight.flightDto.id)" -->
-        <td><button *ngIf="flight.flightDto.isNewStatus"  class="btn btn-primary" >
+        <td><button *ngIf="flight.flightDto.isNewStatus" (click)="editionClick(flight.flightDto.id)" class="btn btn-primary" >
           Edytuj
         </button></td>
     </tr>
