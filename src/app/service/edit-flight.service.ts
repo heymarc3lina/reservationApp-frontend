@@ -6,11 +6,19 @@ import { AuthenticationService } from './authentication.service';
 import { FlightModel } from './flight.service';
 
 export interface UpdateFlightData{
-
   airportAndPlaneDto : AirportAndPlane;
   flightDto : FlightModel;
-
 }
+
+export interface EditFlightData{
+  plain: String;
+  arrivalAirport: string;
+  departureAirport: string;
+  arrivalDate: Date | undefined;
+  departureDate: Date | undefined;
+  price: number;
+}
+
 
 export interface AirportAndPlane{
   airportList: Array<Airport> ;
@@ -41,6 +49,24 @@ export class EditFlightService {
       catchError(() => {
         console.log('error in connection with server');
         return EMPTY;
+      })
+    );
+  }
+
+
+  editFlight(editFlight: EditFlightData, id: number) : Observable<boolean> {
+    const token = this.authenticationService.tokenValue;
+    const headers = new HttpHeaders().set('authorization', token || '');
+    return this.http.put(this.API_URL_EDIT_FLIGHT+`${id}`+"/update", editFlight, { headers, observe: 'response' }).pipe(
+      map(response => {
+        if (response.status !== 200) {
+          return false;
+        }
+        return true;
+      }),
+      catchError(() => {
+        console.log('Error during communication with server.');
+        return of(false);
       })
     );
   }

@@ -56,7 +56,7 @@ export class AuthenticationService {
   logOut(): void {
     localStorage.removeItem(this.JWT_TOKEN);
     location.reload()
-    this.router.navigate(['flights']);
+    window.location.replace('/');
   }
 
   register(registerData: registerModel): Observable<boolean> {
