@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { AddingFlightComponent } from './adding-flight/adding-flight.component';
 import { AllUserReservationListComponent } from './all-user-reservation-list/all-user-reservation-list.component';
 import { ConfirmRegistrationComponentComponent } from './confirm-registration-component/confirm-registration-component.component';
 import { ConfirmReservationComponent } from './confirm-reservation/confirm-reservation.component';
@@ -23,7 +24,8 @@ const routes: Routes = [
   { path: 'flights/:flightId', component: ReservationComponent, canActivate: [AuthGuardService]},
   {path:  'myReservation', component: UserReservationListComponent, canActivate: [AuthGuardService]}, 
   {path:  'allReservation', component: AllUserReservationListComponent, canActivate: [AuthGuardService]},
-  {path:  'flights/edit/:flightId', component: EditFlightComponent, canActivate: [AuthGuardService]}
+  {path:  'flights/edit/:flightId', component: EditFlightComponent, canActivate: [AuthGuardService]},
+  {path:  'createFlight', component: AddingFlightComponent, canActivate: [AuthGuardService]}
 ];
 
 @NgModule({

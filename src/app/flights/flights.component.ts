@@ -49,8 +49,6 @@ export class FlightsComponent implements OnInit, OnDestroy {
 
   constructor(private flightService: FlightService, private fb: FormBuilder, private router: Router, private authService: AuthenticationService) {
     this.dataForms = this.fb.group({
-      // date: [''||   Validators.required
-      // ], 
       date: "mm/dd/yyyy",
       minPrice: [0],
       maxPrice: [this.maxPrice],
@@ -83,17 +81,6 @@ export class FlightsComponent implements OnInit, OnDestroy {
       this.flightsForUser();
     }
     
-   
-      // flights?.forEach(flight => {
-      //   if(flight.flightStatus == )
-      //   this.listOfFlights.push(flight);
-      //     // if (numberOfReadyProducts > flights.length - 2) {
-      //     //   this.prepareForms();
-      //     }
-
-      //   });
-    
-  
     this.dataLoaded = true;
   };
 

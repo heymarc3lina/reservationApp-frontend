@@ -196,6 +196,11 @@ export class EditFlightComponent implements OnInit {
     }
 
     if(!((this.dataForms.get('dateDeparture')?.value as Date  )instanceof Date)){
+      var dateToEdit = (this.dataForms.get('dateDeparture')?.value as Date).toLocaleString();
+      if(dateToEdit.split(".", 1)[0].length === 1){
+        dateToEdit = "0"+dateToEdit.split(",", 1)[0];
+        console.log(dateToEdit);
+      }
       console.log(this.departureDate);
       if((this.dataForms.get('timeDeparture')?.value) !== ""){
         console.log((this.departureDate)?.toLocaleString().split(" ", 1) + " " + this.dataForms.get('timeDeparture')?.value);
@@ -205,6 +210,10 @@ export class EditFlightComponent implements OnInit {
       }
     }else{
       var dateToEdit = (this.dataForms.get('dateDeparture')?.value as Date).toLocaleString();
+      if(dateToEdit.split(".", 1)[0].length === 1){
+        dateToEdit = "0"+dateToEdit.split(",", 1)[0];
+        console.log(dateToEdit);
+      }
       if((this.dataForms.get('timeDeparture')?.value) !== ""){
         console.log(dateToEdit.split(",", 1) + " " + this.dataForms.get('timeDeparture')?.value);
         this.dataForms.get('dateDeparture')?.setValue(dateToEdit.split(",", 1) + " " + this.dataForms.get('timeDeparture')?.value)
@@ -216,7 +225,11 @@ export class EditFlightComponent implements OnInit {
 
     if(!((this.dataForms.get('dateArrival')?.value as Date  )instanceof Date)){
       console.log(this.arrivalDate);
-      
+      var dateToEdit = (this.dataForms.get('dateArrival')?.value as Date).toLocaleString();
+      if(dateToEdit.split(".", 1)[0].length === 1){
+        dateToEdit = "0"+dateToEdit.split(",", 1)[0];
+        console.log(dateToEdit);
+      }      
       if((this.dataForms.get('timeArrival')?.value) !== ""){
         console.log((this.arrivalDate)?.toLocaleString().split(" ", 1) + " " + this.dataForms.get('timeArrival')?.value);
         this.dataForms.get('dateArrival')?.setValue((this.arrivalDate)?.toLocaleString().split(" ", 1) + " " + this.dataForms.get('timeArrival')?.value)
@@ -225,6 +238,10 @@ export class EditFlightComponent implements OnInit {
       }
     }else{
       var dateToEdit = (this.dataForms.get('dateArrival')?.value as Date).toLocaleString();
+      if(dateToEdit.split(".", 1)[0].length === 1){
+        dateToEdit = "0"+dateToEdit.split(",", 1)[0];
+        console.log(dateToEdit);
+      }
       if((this.dataForms.get('timeArrival')?.value) !== ""){
         console.log(dateToEdit.split(",", 1) + " " + this.dataForms.get('timeArrival')?.value);
         this.dataForms.get('dateArrival')?.setValue(dateToEdit.split(",", 1) + " " + this.dataForms.get('timeArrival')?.value)

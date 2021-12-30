@@ -11,7 +11,7 @@
             <a  *ngIf="isManager" class="nav-link" [ngClass]="{active: router.url === '/myReservation'}" routerLink="allReservation">Rezerwacje</a>
           </li>
           <li *ngIf="isLoged" class="nav-item">
-            <a  *ngIf="isManager" class="nav-link"  routerLink="createFlight">Stwórz lot</a>
+            <a  *ngIf="isManager" class="nav-link" [ngClass]="{active: router.url === '/createFlight'}" routerLink="createFlight">Stwórz lot</a>
           </li>
         </ul>
         <form class="d-flex">
