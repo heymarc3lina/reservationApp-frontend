@@ -20,7 +20,7 @@
     <div *ngIf="isValidName" class="alert alert-danger" role="alert">
         Imie powinno zawierac same litery
     </div>
-    <form [formGroup]="dataForm" (ngSubmit)="onSubmit()">
+    <form *ngIf="!isAdmin" [formGroup]="dataForm" (ngSubmit)="createUserAccount()">
         <div class="form-group">
             <label for="exampleInputEmail1">Email</label>
             <input ype="text" class="form-control" id="exampleInputEmail1" name="email" aria-describedby="emailHelp" placeholder="Wpisz email" formControlName="email">
@@ -42,5 +42,32 @@
             <input type="password" class="form-control" id="exampleInputPassword2" name="confirmPassword" placeholder="Potwierdź Hasło" formControlName="confirmPassword">
         </div>
         <button type="submit" class="btn btn-primary">Zarejestruj</button>
+    </form>
+    <form *ngIf="isAdmin" [formGroup]="dataForm" >
+        <div class="form-group">
+            <label for="exampleInputEmail1">Email</label>
+            <input ype="text" class="form-control" id="exampleInputEmail1" name="email" aria-describedby="emailHelp" placeholder="Wpisz email" formControlName="email">
+        </div>
+        <div class="form-group">
+            <label for="exampleInputusername1">Imie</label>
+            <input type="text" class="form-control" id="exampleInputusername1" name="name" placeholder="Imie" formControlName="name">
+        </div>
+        <div class="form-group">
+            <label for="exampleInputusername2">Nazwisko</label>
+            <input type="text" class="form-control" id="exampleInputusername2" name="surname" placeholder="Nazwisko" formControlName="surname">
+        </div>
+        <div class="form-group">
+            <label for="exampleInputPassword1">Hasło</label>
+            <input type="password" class="form-control" id="exampleInputPassword1" name="password" placeholder="Hasło" formControlName="password">
+        </div>
+        <div class="form-group">
+            <label for="exampleInputPassword2">Potwierdź Hasło</label>
+            <input type="password" class="form-control" id="exampleInputPassword2" name="confirmPassword" placeholder="Potwierdź Hasło" formControlName="confirmPassword">
+        </div>
+        <label>Utwórz konto z odpowiednim typem:</label>
+        <br>
+        <button type="submit" class="btn btn-primary" (click)="createUserAccount()"> Rezerwujący</button> &nbsp;
+        <button type="submit" class="btn btn-primary" (click)="createManagerAccount()">Manager</button>&nbsp;
+        <button type="submit" class="btn btn-primary" (click)="createAdminAccount()">Administrator</button>&nbsp;
     </form>
 </div>

@@ -23,6 +23,7 @@ import { UserReservationListComponent } from './user-reservation-list/user-reser
 import { AllUserReservationListComponent } from './all-user-reservation-list/all-user-reservation-list.component';
 import { AddingFlightComponent } from './adding-flight/adding-flight.component';
 import { EditFlightComponent } from './edit-flight/edit-flight.component';
+import { UserComponent } from './user/user.component';
 
 
 @NgModule({
@@ -38,7 +39,8 @@ import { EditFlightComponent } from './edit-flight/edit-flight.component';
     UserReservationListComponent,
     AllUserReservationListComponent,
     EditFlightComponent,
-    AddingFlightComponent
+    AddingFlightComponent,
+    UserComponent
   ],
   imports: [
     BrowserModule,

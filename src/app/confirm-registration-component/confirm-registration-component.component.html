@@ -1,1 +1,13 @@
-<p>confirm-registration-component works!</p>
+<div class="card text-center">
+    <div class="card-header">
+      Sukces
+    </div>
+    <div *ngIf="!isAdmin" class="card-body">
+      <h5 class="card-title">Na podany email zostało wysłane potwierdzenie rejestracji konta. </h5>
+      <p class="card-text">Jeśli chcesz aktywować konto kliknij w wysłany link.</p>
+    </div>
+    <div *ngIf="isAdmin" class="card-body">
+        <h5 class="card-title">Konto zostało utworzone pomyślnie.</h5>
+        <p class="card-text">Jeśli utworzyłeś konto rezerwującego poinformuj go o konieczności aktywacji.</p>
+      </div>
+  </div>

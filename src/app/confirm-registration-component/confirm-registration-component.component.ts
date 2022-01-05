@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { AuthenticationService } from '../service/authentication.service';
+import { FlightService, Role } from '../service/flight.service';
 
 @Component({
   selector: 'app-confirm-registration-component',
@@ -7,9 +9,30 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ConfirmRegistrationComponentComponent implements OnInit {
 
-  constructor() { }
+  isLoged = false;
+  isAdmin = false;
+  whoIsIt:  Role | undefined;
 
-  ngOnInit(): void {
+
+  constructor(private authenticationService: AuthenticationService, private flightService: FlightService) {}
+
+  ngOnInit() {
+    this.isLoged = this.authenticationService.isLoged();
+    this.checkWhoIsIt();
+    
+  }
+
+  checkWhoIsIt() : void {
+    this.isAdmin = false;
+    if(this.isLoged){
+      this.flightService.whoIsIt().subscribe(who=>{
+        console.log(who.role);
+       if(who.role == "ADMIN") {
+          this.isAdmin = true;
+         console.log("admin");
+        }
+      });
+    } 
   }
 
 }

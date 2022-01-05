@@ -13,6 +13,7 @@ export class NavbarComponent implements OnInit {
   isLoged = false;
   isManager = false;
   isUser = false;
+  isAdmin = false;
   whoIsIt:  Role | undefined;
 
 
@@ -35,7 +36,8 @@ export class NavbarComponent implements OnInit {
 
   checkWhoIsIt() : void {
     this.isManager = false;
-  this.isUser = false;
+    this.isUser = false;
+    this.isAdmin = false;
     if(this.isLoged){
       this.flightService.whoIsIt().subscribe(who=>{
         console.log(who.role);
@@ -45,6 +47,10 @@ export class NavbarComponent implements OnInit {
         }else if(who.role == "MANAGER") {
           this.isManager = true;
          console.log("manager");
+        }
+        else if(who.role == "ADMIN") {
+          this.isAdmin = true;
+         console.log("admin");
         }
        });
       }

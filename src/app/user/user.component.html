@@ -1,0 +1,38 @@
+<div *ngIf="dataLoaded; else loading" class="container main-container">
+    <div class="row">
+        <div class="col">
+            <form [formGroup]="dataForms">
+                <label>Wybierz kategorie:</label>
+                <div form-item *ngFor="let role of listOfRoles" class="form-check">
+                    <input type="radio" [value]="role" class="form-check-input" formControlName="role">
+                    <label class="form-check-label">{{ role }}</label>
+                </div>
+            </form>
+        </div>
+        <div class="col-10">
+        <table class= "table">
+            <thead>
+            <tr>
+                <th>Użytkownik</th>
+                <th>Rola</th>
+                <th>Data utworzenia</th>
+                <th>Data aktywacji</th>
+                <th>Aktywny</th>
+            </tr>
+            </thead>
+        <tbody>
+        <tr *ngFor = "let user of filteredListOfUser" style="height:60px;">
+             <td> {{user.name}} &nbsp;  {{user.surname}} <br> {{user.email}}</td>
+            <td> {{user.role}}</td>
+            <td> {{user.createdDate}} </td>
+            <td> {{user.activationDate}}</td>
+            <td> {{user.userStatus}}</td>
+        </tr>
+        </tbody>
+        </table>
+    </div>
+    </div>
+</div>
+<ng-template #loading>
+    Ładowanie...
+</ng-template>

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpResponse,  } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpResponse,  } from '@angular/common/http';
 import { BehaviorSubject, Observable, pipe, of, EMPTY } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { map, catchError } from 'rxjs/operators';
@@ -27,7 +27,10 @@ export interface registerModel {
 export class AuthenticationService {
   private JWT_TOKEN = 'JWT_TOKEN';
   private API_URL_LOGIN = "http://localhost:8081/ticketreservation/api/login";
-  private API_URL_REGISTER = "http://localhost:8081/ticketreservation/api/register/user";
+  private API_URL_REGISTER_USER = "http://localhost:8081/ticketreservation/api/register/user";
+  private API_URL_REGISTER_MANAGER = "http://localhost:8081/ticketreservation/api/register/manager";
+  private API_URL_REGISTER_ADMIN = "http://localhost:8081/ticketreservation/api/register/admin";
+  
 
   constructor(private http: HttpClient, private router: Router) {
   }
@@ -60,7 +63,7 @@ export class AuthenticationService {
   }
 
   register(registerData: registerModel): Observable<boolean> {
-    return this.http.post(this.API_URL_REGISTER, registerData, { observe: 'response' }).pipe(
+    return this.http.post(this.API_URL_REGISTER_USER, registerData, { observe: 'response' }).pipe(
       map(response => {
         if (response.status !== 201) {
           console.log('something went wrong');
@@ -74,6 +77,44 @@ export class AuthenticationService {
       })
     )
   }
+ 
+
+  registerManager(registerData: registerModel): Observable<boolean> {
+    const token = this.tokenValue;
+    const headers = new HttpHeaders().set('Authorization', token || '');
+    return this.http.post(this.API_URL_REGISTER_MANAGER, registerData,  { headers, observe: 'response' }).pipe(
+      map(response => {
+        if (response.status !== 201) {
+          console.log('something went wrong');
+          return false;
+        }
+        return true;
+      }),
+      catchError(() => {
+        console.log('error happened');
+        return of(false);
+      })
+    )
+  }
+
+  registerAdmin(registerData: registerModel): Observable<boolean> {
+    const token = this.tokenValue;
+    const headers = new HttpHeaders().set('Authorization', token || '');
+    return this.http.post(this.API_URL_REGISTER_ADMIN, registerData,  { headers, observe: 'response' }).pipe(
+      map(response => {
+        if (response.status !== 201) {
+          console.log('something went wrong');
+          return false;
+        }
+        return true;
+      }),
+      catchError(() => {
+        console.log('error happened');
+        return of(false);
+      })
+    )
+  }
+
 
   get tokenValue(): string | null {
     return localStorage.getItem(this.JWT_TOKEN);

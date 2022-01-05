@@ -10,8 +10,8 @@ import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
 import { ReservationComponent } from './reservation/reservation.component';
 import { AuthGuardService } from './service/auth-guard.service';
-import { FlightService } from './service/flight.service';
 import { UserReservationListComponent } from './user-reservation-list/user-reservation-list.component';
+import { UserComponent } from './user/user.component';
 
 
 const routes: Routes = [
@@ -25,6 +25,7 @@ const routes: Routes = [
   {path:  'myReservation', component: UserReservationListComponent, canActivate: [AuthGuardService]}, 
   {path:  'allReservation', component: AllUserReservationListComponent, canActivate: [AuthGuardService]},
   {path:  'flights/edit/:flightId', component: EditFlightComponent, canActivate: [AuthGuardService]},
+  {path:  'users', component: UserComponent, canActivate: [AuthGuardService]},
   {path:  'createFlight', component: AddingFlightComponent, canActivate: [AuthGuardService]}
 ];
 
