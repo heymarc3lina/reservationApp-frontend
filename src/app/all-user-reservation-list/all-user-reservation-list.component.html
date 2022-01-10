@@ -10,6 +10,7 @@
         <th>Data przylotu i odlotu</th>
         <th>Samolot</th>
         <th>Miejsce</th>
+        <th>Cena</th>
         <th>Data rezerwacji</th>
         <th>Status</th>
       </tr>
@@ -23,6 +24,7 @@
           <td> {{reservation.reservationDto.departureDate}} &nbsp;&nbsp; <i class="fa fa-arrow-right" aria-hidden="true">  &nbsp;&nbsp; </i> {{reservation.reservationDto.arrivalDate}}</td>
           <td> {{reservation.reservationDto.planeName}}</td>
           <td> {{reservation.reservationDto.seatNumber}}</td>
+          <td>{{reservation.reservationDto.price}}</td>
           <td>{{reservation.reservationDto.reservationDate}}</td>
           <td>{{reservation.reservationDto.reservationStatus}}</td>
           <td ><button  *ngIf="reservation.reservationDto.isReservationActive" (click)="reservationCancelClick(reservation.reservationDto.reservationId)" class="btn btn-primary" >

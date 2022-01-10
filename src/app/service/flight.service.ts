@@ -1,6 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { EMPTY, Observable, of } from 'rxjs';
+import { Router } from '@angular/router';
+import { EMPTY, Observable, of, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { AuthenticationService } from './authentication.service';
 
@@ -71,7 +72,7 @@ export class FlightService {
   private API_URL_FLIGHTS = "http://localhost:8081/ticketreservation/api/flight/allFlight";
   private API_URL_ALL_FLIGHTS = "http://localhost:8081/ticketreservation/api/flight";
   private API_URL_WHOISIT = "http://localhost:8081/ticketreservation/api/whoami";
-  constructor(private http: HttpClient, private authenticationService: AuthenticationService) { }
+  constructor(private http: HttpClient, private authenticationService: AuthenticationService, private router: Router) { }
 
   getAllFlights(): Observable<Array<FlightModel>> {
     return this.http.get<Array<FlightModel>>(this.API_URL_FLIGHTS)
@@ -96,16 +97,15 @@ export class FlightService {
   }
 
   whoIsIt(): Observable<Role>{
-    return this.http.get<Role>(this.API_URL_WHOISIT, { headers: this.getAuthorizationHeaders() }).pipe(
+    return this.http.get<Role>(this.API_URL_WHOISIT, { headers: this.getAuthorizationHeaders()}).pipe(
       catchError(() => {
-        console.log('error in connection with server');
+        console.log('Error during communication with server.');
+        this.authenticationService.logOut();
+        this.router.navigate(['login']);
         return EMPTY;
-      }));
+      })
+    );
     
-  }
-
-  getFilters():  Observable<Array<FlightModel>>{
-    return this.http.get<Array<FlightModel>>("http://localhost:8081/ticketreservation/api/reservation/allMyReservation",  { headers: this.getAuthorizationHeaders() });
   }
 
   getFlightToReservation(id: number): Observable<DataToPrepareReservation> {

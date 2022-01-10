@@ -2,7 +2,7 @@
     <div class="row">
         <div class="col">
             <form [formGroup]="dataForms">
-                <label>Wybierz kategorie:</label>
+                <label>Wybierz rolę:</label>
                 <div form-item *ngFor="let role of listOfRoles" class="form-check">
                     <input type="radio" [value]="role" class="form-check-input" formControlName="role">
                     <label class="form-check-label">{{ role }}</label>

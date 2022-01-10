@@ -22,6 +22,7 @@ export class RegisterComponent implements OnInit {
   isEmailNotCorrect = false;
   isLoged = false;
   isAdmin = false;
+  dataLoaded = true;
   regexp = new RegExp(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/);
 
   constructor(private fb: FormBuilder, private authenticationService: AuthenticationService, private router: Router, private flightService: FlightService) { 
@@ -48,13 +49,17 @@ export class RegisterComponent implements OnInit {
           this.isAdmin = true;
          console.log("admin");
         }
-       });
+       }, error =>{
+          window.location.replace('/login');
+       }
+       );
       }
   }
   
 
   createUserAccount(): void {
     this.validForm();
+    this.dataLoaded = false;
     if( !this.isSomethingWrong){
       const registerData: registerModel = {
         email: this.dataForm.get('email')?.value,
@@ -62,11 +67,13 @@ export class RegisterComponent implements OnInit {
         surname: this.dataForm.get('surname')?.value,
         password: this.dataForm.get('password')?.value
       };
+     
       this.authenticationService.register(registerData).subscribe(success => {
         if (success) {
           window.location.replace('/confirm');
         } else {
           this.isServerErrorAlert = true;
+          this.dataLoaded = true;
         }
       })
     }

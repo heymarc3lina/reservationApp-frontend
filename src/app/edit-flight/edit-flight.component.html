@@ -40,8 +40,10 @@
 <div *ngIf="isNotValidHourDeparture" class="alert alert-danger" role="alert">
     Niepoprawny format godziny odlotu. 
 </div>
- <div *ngIf="dataLoaded; else loading" >
+<div *ngIf="isServerErrorAlert" class="alert alert-danger" role="alert">
+  Daty są te same bądź przedawnione. Bądź nie spełniają warunku plus pięć godzin od teraz. 
 </div>
+ <div *ngIf="dataLoaded; else loading" >
   <form [formGroup]="dataForms" (ngSubmit)="onSubmit()">
     <div class="form-group ">
       <mat-form-field>

@@ -32,6 +32,9 @@
 <div *ngIf="isNotValidDataDeparture" class="alert alert-danger" role="alert">
     Data odlotu jest niepoprawna albo niewybrana.
  </div>
+ <div *ngIf="isNotsuccesfullyCreatingFlight" class="alert alert-danger" role="alert">
+    Dates are the same or are overdue.
+</div>
  <div *ngIf="dataLoaded; else loading" >
 </div>
   <form [formGroup]="dataForms" (ngSubmit)="onSubmit()">

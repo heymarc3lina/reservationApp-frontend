@@ -80,6 +80,10 @@
               "browserTarget": "reservationApp:build:development"
             }
           },
+          "options": {
+                  "host": "flightreservation.service",
+                  "port": 80
+                },
           "defaultConfiguration": "development"
         },
         "extract-i18n": {

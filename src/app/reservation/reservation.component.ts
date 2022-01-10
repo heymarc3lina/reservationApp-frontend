@@ -53,6 +53,7 @@ export class ReservationComponent implements OnInit {
 
       if(this.seatsChecked.length < 1){
         this.isSomethingClicked = true;
+        this.dataLoaded = true;
       }else{
         console.log(this.seatsChecked);
         this.reservationService.createReservation( this.reservation?.id ,this.seatsChecked ).subscribe(response =>{

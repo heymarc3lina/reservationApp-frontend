@@ -127,5 +127,4 @@ export class AuthenticationService {
   private storeToken(token: string) {
     localStorage.setItem(this.JWT_TOKEN, token);
   }
-
 }

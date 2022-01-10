@@ -40,7 +40,7 @@ export class AddingFlightComponent implements OnInit {
   isEmptyHourArrival = false;
   isNotValidDataDeparture=false;
   isNotValidDataArrival=false;
-  succesfullyCreatingFlight = false;
+  isNotsuccesfullyCreatingFlight = false;
 
   priceSubscription: Subscription | undefined;
   arrivalAirportSubscription: Subscription | undefined;
@@ -148,6 +148,7 @@ export class AddingFlightComponent implements OnInit {
     this.isEmptyHourArrival = false;
     this.isNotValidDataDeparture = false;
     this.isNotValidDataArrival = false;
+    this.isNotsuccesfullyCreatingFlight = false;
 
     this.validData();
 
@@ -164,8 +165,11 @@ export class AddingFlightComponent implements OnInit {
   this.addFlightService.createFlight( flightModel ).subscribe(response =>{
     console.log(response);
     if(response){
-        this.succesfullyCreatingFlight = true;
+        this.isNotsuccesfullyCreatingFlight = false;
         window.location.replace("/");
+    }
+    else{
+      this.isNotsuccesfullyCreatingFlight = true;
     }
   });
   }

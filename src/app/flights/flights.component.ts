@@ -19,7 +19,9 @@ export class FlightsComponent implements OnInit, OnDestroy {
   whoIsIt:  Role | undefined;
   statusChange: StatusChange | undefined;
   isLogged = true;
+  isNotAuthorized = false;
   isManager : Boolean | undefined;
+  isAdmin = false;
   succesfullyCChanged: boolean | undefined;
 
   listOfArrivalAirports: Array<String> = [];
@@ -65,11 +67,14 @@ export class FlightsComponent implements OnInit, OnDestroy {
     this.dataLoaded = false;
     this.numberOfReadyFlights = 0;
     this.isManager = false;
+    this.isAdmin = false;
     if(this.authService.isLoged()){
       this.flightService.whoIsIt().subscribe(who=>{
         console.log(who.role);
-        if(who.role == "USER"){
-         console.log("user");
+        if(who.role == "USER" || who.role == "ADMIN"){
+          if(who.role === "ADMIN"){
+            this.isAdmin = true;
+          }  
          this.flightsForUser();
         }else if(who.role == "MANAGER") {
           this.isManager = true;
@@ -106,12 +111,7 @@ flightsForUser() : void{
 flightsForManager() : void{
   this.flightService.getAllExistingFlights().subscribe(flights => {
   flights?.forEach(flight => {
-   console.log(flight)
-   if(flight.flightDto.flightStatus == "NEW"){
-     flight.flightDto.isNewStatus = true;
-   }else{
-    flight.flightDto.isNewStatus = false;
-   }
+   this.translateStatus(flight);
     this.listOfAllFlights.push(flight);
     this.numberOfReadyFlights++;
   });
@@ -147,6 +147,28 @@ flightsForManager() : void{
     this.filterFlights();
   }
 
+  translateStatus(flight :FlightWithStatuses): void {
+    if(flight.flightDto.flightStatus === "NEW"){
+      flight.flightDto.flightStatus = "Nowy";
+       flight.flightDto.isNewStatus = true;
+     }
+     else{
+       if(flight.flightDto.flightStatus === 	"AVAILABLE"){
+        flight.flightDto.flightStatus = "Dostępny";
+       }
+       if(flight.flightDto.flightStatus === 	"OVERDATE"){
+        flight.flightDto.flightStatus = "Zakończony";
+       }
+       if(flight.flightDto.flightStatus === 	"FULL"){
+        flight.flightDto.flightStatus = "Pełny";
+       }
+       if(flight.flightDto.flightStatus === 	"CANCELLED"){
+        flight.flightDto.flightStatus = "Anulowany";
+       }
+      flight.flightDto.isNewStatus = false;
+     }
+
+  }
 
   prepareFormsForManager(): void {
     this.listOfArrivalAirports.push(this.defaultOption);
@@ -195,6 +217,10 @@ flightsForManager() : void{
   }
 
   reservationClick(flightId: number): void{
+    this.isNotAuthorized = false;
+    if(this.isAdmin){
+      this.isNotAuthorized = true;
+    }else{
     if(this.authService.isLoged()){
       window.location.replace(this.URL+flightId);
       this.isLogged = true;
@@ -202,6 +228,7 @@ flightsForManager() : void{
     }else {
       this.isLogged = false;
     }
+  }
     
     
   }

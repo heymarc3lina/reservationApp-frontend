@@ -23,6 +23,7 @@ export interface AllUserReservation{
   departureDate: Date;
   seatNumber: number;
   reservationStatus: string;
+  price: number;
   isReservationActive: boolean;
 }
 

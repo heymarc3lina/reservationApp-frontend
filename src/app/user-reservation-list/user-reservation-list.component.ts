@@ -36,9 +36,9 @@ succesfullyCancelled = false;
           reservation.isReservationActive= false;
         }
         this.listOfUserReservation.push(reservation);
-      });
-      
-      
+      });  
+    }, error=>{
+      window.location.replace('/login');
     });
   
     this.dataLoaded = true;
