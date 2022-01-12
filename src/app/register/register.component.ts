@@ -42,6 +42,7 @@ export class RegisterComponent implements OnInit {
 
   checkWhoIsIt() : void {
     this.isAdmin = false;
+    console.log(this.isAdmin);
     if(this.isLoged){
       this.flightService.whoIsIt().subscribe(who=>{
         console.log(who.role);
@@ -49,18 +50,16 @@ export class RegisterComponent implements OnInit {
           this.isAdmin = true;
          console.log("admin");
         }
-       }, error =>{
-          window.location.replace('/login');
-       }
-       );
-      }
+       });
+    }
+      console.log(this.isAdmin);
   }
   
 
   createUserAccount(): void {
     this.validForm();
-    this.dataLoaded = false;
     if( !this.isSomethingWrong){
+      this.dataLoaded = false;
       const registerData: registerModel = {
         email: this.dataForm.get('email')?.value,
         name: this.dataForm.get('name')?.value,

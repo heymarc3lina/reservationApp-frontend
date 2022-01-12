@@ -3,7 +3,6 @@
   <div *ngIf="!isLogged" class="alert alert-danger" role="alert">
     By dokonać rezerwacji musisz być
     <a [routerLink]="['/login']">zalogowany</a>
-    isNotAuthorized
 </div>
 <div *ngIf="isNotAuthorized" class="alert alert-danger" role="alert">
   Nie masz uprawnień do dokonania rezerwacji. Nie jesteś rezerwującym.
